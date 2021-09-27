@@ -7,6 +7,7 @@ authors = ["danilo.costa <danilo.costa@olist.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 localstack = "^0.12.18"
+black = "^21.9b0"
 
 [tool.poetry.dev-dependencies]
 
