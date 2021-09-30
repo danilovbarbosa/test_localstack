@@ -11,18 +11,20 @@ def __init_s3():
         region_name="us-east-1",
         aws_access_key_id="mock_access_key",
         aws_secret_access_key="mock_secret_key",
-        endpoint_url="http://localhost:4566",
+        endpoint_url="http://localstack:4566",
     )
 
 
 def create_s3():
     s3 = __init_s3()
-    return s3.create_bucket(Bucket="teste")
+    bucket = s3.create_bucket(Bucket="agoravai")
+    print(bucket)
+    return bucket
 
 
 def send_object(object_name=None):
     create_s3()
-    file_name = "Dockerfile"
+    file_name = "main.tf"
     if object_name is None:
         object_name = os.path.basename(file_name)
 
@@ -32,10 +34,10 @@ def send_object(object_name=None):
         region_name="us-east-1",
         aws_access_key_id="mock_access_key",
         aws_secret_access_key="mock_secret_key",
-        endpoint_url="http://localhost:4566",
+        endpoint_url="http://localstack:4566",
     )
     try:
-        response = s3_client.upload_file(file_name, "teste", object_name)
+        response = s3_client.upload_file(file_name, "agoravai", object_name)
     except ClientError as e:
         print(e)
         return False

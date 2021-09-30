@@ -1,19 +1,38 @@
 version: '3.9'
 
 services:
+    app:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        tty: true
+        stdin_open: true
+        working_dir: /var/www/app
+        volumes:
+        - ".:/var/www/app"
+        depends_on:
+        - localstack
+        networks:
+        - net_local
+
     localstack:
         image: localstack/localstack:latest
         container_name: localstack
         ports:
             - '4566-4597:4566-4597'
-        environment: 
-          - AWS_DEFAULT_REGION=us-east-1
+        environment:
+            - AWS_DEFAULT_REGION=us-east-1
+            - SERVICES=s3
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
+            - ./aws:/docker-entrypoint-initaws.d
+
+        networks:
+        - net_local
 
 networks:
-    default:
-        name: localstack
+    net_local:
+        driver: bridge
         
 
 
